@@ -38,5 +38,7 @@ Eine webbasierte Tippgeschwindigkeitstest-Anwendung, entwickelt mit PHP, MySQL u
 1. Repository klonen:
 
    ```bash
-   git clone https://github.com/dein-benutzername/php-typing-speed-test.git
-   cd php-typing-speed-test
+   git clone https://github.com/BasementKirill/PHP-ProejktTypeFast.git
+   cd PHP-ProjektTypeFast
+
+
