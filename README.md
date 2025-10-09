@@ -1,41 +1,42 @@
-# PHP-ProjektTypeFast
+# PHP Tippgeschwindigkeitstest mit Benutzer-Login und Währungssystem
 
-A web-based typing speed test built with PHP, MySQL, and JavaScript. Users can register, log in, take typing speed tests, save their scores, and compete with others on a leaderboard.
+Eine webbasierte Tippgeschwindigkeitstest-Anwendung, entwickelt mit PHP, MySQL und JavaScript. Benutzer können sich registrieren, anmelden, ihre Tippgeschwindigkeit testen, Ergebnisse speichern und in einer Bestenliste gegeneinander antreten. Zusätzlich gibt es ein Währungssystem, mit dem Nutzer Features freischalten und upgraden können, z.B. den 1-gegen-1-Modus gegen einen eigenen vorherigen Versuch.
 
 ---
 
 ## Features
 
-- User registration and login system with secure password hashing
-- Real-time typing speed (WPM) and accuracy calculation on the frontend
-- Save typing test results (WPM and accuracy) per user in a MySQL database
-- Leaderboard displaying top scores and user rankings
-- “Race” feature to compare your typing speed against top scores (optional frontend enhancement)
-- Clean, minimalist user interface for distraction-free typing
+- Benutzerregistrierung und Login mit sicherer Passwort-Hashing
+- Echtzeit-Berechnung der Tippgeschwindigkeit (WPM) und Genauigkeit im Frontend
+- Speicherung der Ergebnisse (WPM, Genauigkeit) pro Benutzer in MySQL
+- Bestenliste mit Benutzer-Rankings und Top-Ergebnissen
+- Währungssystem: Für jedes abgeschlossene Tipp-Test erhält man eine virtuelle Währung
+- Upgrade-Features, z.B. 1v1-Modus gegen eigenen vorherigen Versuch, der mehr Währung bringt
+- Minimalistisches, ablenkungsfreies Benutzerinterface
 
 ---
 
-## Technology Stack
+## Technologie-Stack
 
-- **Backend:** PHP 7+ with PDO for database interaction
-- **Frontend:** HTML5, CSS3, JavaScript (for typing test logic and AJAX)
-- **Database:** MySQL or MariaDB
-- **Session Management:** PHP sessions for authentication
+- **Backend:** PHP 7+ mit PDO für Datenbankzugriff
+- **Frontend:** HTML5, CSS3, JavaScript (für Testlogik und AJAX-Kommunikation)
+- **Datenbank:** MySQL oder MariaDB
+- **Session-Management:** PHP-Sessions für Benutzerauthentifizierung
 
 ---
 
-## Getting Started
+## Erste Schritte
 
-### Prerequisites
+### Voraussetzungen
 
-- PHP 7.0 or higher
-- MySQL or compatible database server
-- Web server (Apache, Nginx, etc.)
+- PHP 7.0 oder höher
+- MySQL oder kompatibler Datenbankserver
+- Webserver (Apache, Nginx, o.ä.)
 
 ### Installation
 
-1. Clone the repository:
+1. Repository klonen:
 
    ```bash
-   git clone https://github.com/BasementKirill/PHP-ProjektTypeFast.git
-   cd PHP-ProjektTypeFast
+   git clone https://github.com/dein-benutzername/php-typing-speed-test.git
+   cd php-typing-speed-test
