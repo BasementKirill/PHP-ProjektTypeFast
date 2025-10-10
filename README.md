@@ -1,44 +1,67 @@
-# PHP Tippgeschwindigkeitstest mit Benutzer-Login und Währungssystem
+# PHP-ProejktTypeFast mit Vue.js 
 
-Eine webbasierte Tippgeschwindigkeitstest-Anwendung, entwickelt mit PHP, MySQL und JavaScript. Benutzer können sich registrieren, anmelden, ihre Tippgeschwindigkeit testen, Ergebnisse speichern und in einer Bestenliste gegeneinander antreten. Zusätzlich gibt es ein Währungssystem, mit dem Nutzer Features freischalten und upgraden können, z.B. den 1-gegen-1-Modus gegen einen eigenen vorherigen Versuch.
+## Projektbeschreibung
+Diese webbasierte Tippgeschwindigkeitstest-Anwendung kombiniert ein PHP-Backend mit einem Vue.js-Frontend. Benutzer können sich registrieren, anmelden und ihre Tippgeschwindigkeit testen. Ergebnisse werden gespeichert, und durch das Spielen verdienen Nutzer eine virtuelle Währung, mit der sie Features freischalten und upgraden können.
 
 ---
 
 ## Features
 
-- Benutzerregistrierung und Login mit sicherer Passwort-Hashing
-- Echtzeit-Berechnung der Tippgeschwindigkeit (WPM) und Genauigkeit im Frontend
-- Speicherung der Ergebnisse (WPM, Genauigkeit) pro Benutzer in MySQL
-- Bestenliste mit Benutzer-Rankings und Top-Ergebnissen
-- Währungssystem: Für jedes abgeschlossene Tipp-Test erhält man eine virtuelle Währung
-- Upgrade-Features, z.B. 1v1-Modus gegen eigenen vorherigen Versuch, der mehr Währung bringt
-- Minimalistisches, ablenkungsfreies Benutzerinterface
+- **Benutzerregistrierung & Login**
+  - Sichere Passwort-Hashing mit PHP (`password_hash` / `password_verify`)
+  - Session-basierte Authentifizierung
+- **Tippgeschwindigkeitstest**
+  - Echtzeit-Berechnung von WPM (Wörter pro Minute) und Fehleranzahl
+  - Fortschrittsbalken, Fehleranzeige (freischaltbare Features)
+  - Anpassbare UI mit Farb- und Schriftoptionen (Customization)
+- **Speicherung**
+  - Ergebnisse (WPM, Genauigkeit, Fehler) werden pro Benutzer in MySQL gespeichert
+  - Währungssystem: Für jeden abgeschlossenen Test erhalten Benutzer Coins
+- **Feature-Freischaltung**
+  - Features wie Fehleranzeige, Progress Bar, Customization, 1v1-Modus können mit Coins gekauft und freigeschaltet werden
+  - 1v1-Modus: Tipp gegen einen eigenen oder anderen gespeicherten Score
+- **Bestenliste**
+  - Rankings und Top-Ergebnisse aller Benutzer
+- **Minimalistisches und ablenkungsfreies UI**
+- **Technologie-Stack**
+  - Backend: PHP 7+ mit PDO für sicheren DB-Zugriff
+  - Frontend: Vue.js für reaktive, modulare Benutzeroberfläche
+  - Datenbank: MySQL oder MariaDB
+  - Kommunikation zwischen Frontend und Backend via AJAX / REST-API
 
 ---
 
-## Technologie-Stack
+## Architektur
 
-- **Backend:** PHP 7+ mit PDO für Datenbankzugriff
-- **Frontend:** HTML5, CSS3, JavaScript (für Testlogik und AJAX-Kommunikation)
-- **Datenbank:** MySQL oder MariaDB
-- **Session-Management:** PHP-Sessions für Benutzerauthentifizierung
+### Backend (PHP)
+- Benutzerverwaltung, Session-Handling
+- API-Endpunkte für:
+  - User-Login / Registrierung
+  - Tipp-Test Ergebnis speichern & laden
+  - Coins und Feature-Status verwalten
+  - Bestenliste bereitstellen
+- Datenbankanbindung mit PDO
+
+### Frontend (Vue.js)
+- Interaktives Tippfeld mit Echtzeit-Berechnung von WPM, Fehlern, Fortschritt
+- Feature-Management UI (Shop für Freischaltungen)
+- Customization UI (Farben, Fonts)
+- 1v1-Modus UI zur Auswahl gespeicherter Scores
+- AJAX-Kommunikation mit PHP-Backend
 
 ---
 
-## Erste Schritte
+## Installation
 
 ### Voraussetzungen
-
 - PHP 7.0 oder höher
 - MySQL oder kompatibler Datenbankserver
-- Webserver (Apache, Nginx, o.ä.)
+- Webserver (Apache, Nginx o.ä.)
+- Node.js und npm (für Vue.js Entwicklung)
 
-### Installation
-
+### Setup Backend
 1. Repository klonen:
 
    ```bash
    git clone https://github.com/BasementKirill/PHP-ProejktTypeFast.git
    cd PHP-ProjektTypeFast
-
-
