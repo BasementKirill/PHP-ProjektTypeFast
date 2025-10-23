@@ -7,8 +7,8 @@
 
     <div class="info">
       <span>Zeit: {{ timeLeft }}s</span>
-      <span>WPM: {{ wpm }}</span>
-      <span>Accuracy: {{ accuracy }}%</span>
+      <span>WPM: {{ shownWpm }}</span>
+      <span>Accuracy: {{ shownAccuracy }}%</span>
     </div>
 
     <div class="actions">
@@ -35,12 +35,12 @@ const msg = ref('')
 const saving = ref(false)
 
 const wordsTyped = computed(() => input.value.trim().split(/\s+/).filter(Boolean).length)
-const wpm = computed(() => {
+const liveWpm = computed(() => {
   const used = 30 - timeLeft.value
   if (used <= 0) return 0
   return Math.round((wordsTyped.value / used) * 60)
 })
-const accuracy = computed(() => {
+const liveAccuracy = computed(() => {
   const length = Math.max(sample.length, 1)
   let correct = 0
   for (let i = 0; i < Math.min(input.value.length, sample.length); i++) {
@@ -49,14 +49,20 @@ const accuracy = computed(() => {
   return Math.round((correct / length) * 100)
 })
 
+const finalWpm = ref(0)
+const finalAccuracy = ref(0)
+const shownWpm = computed(() => done.value ? finalWpm.value : liveWpm.value)
+const shownAccuracy = computed(() => done.value ? finalAccuracy.value : liveAccuracy.value)
+
 function onInput() {
-  if (!running.value) start()
+  if (!running.value && !done.value) start()
+  // Wenn der gesamte Text exakt (bis auf trailing Spaces) getippt wurde → beenden
+  if (input.value.trimEnd() === sample) finish()
 }
 
 function start() {
-  if (running.value) return
+  if (running.value || done.value) return
   running.value = true
-  done.value = false
   msg.value = ''
   timer.value = setInterval(() => {
     timeLeft.value--
@@ -65,10 +71,13 @@ function start() {
 }
 
 function finish() {
+  if (done.value) return
   clearInterval(timer.value)
   timer.value = null
   running.value = false
   done.value = true
+  finalWpm.value = liveWpm.value
+  finalAccuracy.value = liveAccuracy.value
 }
 
 function reset() {
@@ -79,13 +88,16 @@ function reset() {
   running.value = false
   done.value = false
   msg.value = ''
+  finalWpm.value = 0
+  finalAccuracy.value = 0
 }
 
 async function save() {
+  if (!done.value) return
   saving.value = true
   msg.value = '...'
   try {
-    const res = await api.saveResult(wpm.value, accuracy.value)
+    const res = await api.saveResult(finalWpm.value, finalAccuracy.value)
     msg.value = res.data.status
   } catch (e) {
     msg.value = e?.response?.data?.message || 'Speichern fehlgeschlagen'
