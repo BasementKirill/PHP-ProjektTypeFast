@@ -18,7 +18,7 @@ $stmt = $db->query("SELECT word FROM words ORDER BY RAND() LIMIT $count");
 $words = $stmt->fetchAll(PDO::FETCH_COLUMN);
 
 // Join words with spaces for proper typing test
-$sentence = implode(' ', $words);
+$sentence = implode(' ', $words); // Add space between each word
 
 echo json_encode(['sentence' => $sentence]);
 ?>

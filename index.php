@@ -10,6 +10,18 @@
 session_start();
 $loggedIn = isset($_SESSION['user_id']);
 $username = $_SESSION['username'] ?? '';
+$coins = 0;
+if ($loggedIn) {
+    require_once __DIR__ . '/includes/Database.php';
+    require_once __DIR__ . '/includes/Coins.php';
+    try {
+        $db = (new Database())->connect();
+        $coinsModel = new Coins($db);
+        $coins = $coinsModel->get($_SESSION['user_id']);
+    } catch (Exception $e) {
+        $coins = 0;
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="de">

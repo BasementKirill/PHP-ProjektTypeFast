@@ -18,9 +18,14 @@ class Features {
     // ============================================================================
     // Returns array of feature names that the user has purchased
     public function getUserFeatures($userId) {
-        $stmt = $this->db->prepare("SELECT feature_name FROM {$this->table} WHERE user_id = ?");
-        $stmt->execute([$userId]);
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        try {
+            $stmt = $this->db->prepare("SELECT feature_name FROM {$this->table} WHERE user_id = ?");
+            $stmt->execute([$userId]);
+            return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        } catch (PDOException $e) {
+            // If the table doesn't exist or other DB errors occur, return empty list
+            return [];
+        }
     }
 
     // ============================================================================
@@ -28,9 +33,13 @@ class Features {
     // ============================================================================
     // Returns true if user has purchased the specified feature
     public function hasFeature($userId, $featureName) {
-        $stmt = $this->db->prepare("SELECT 1 FROM {$this->table} WHERE user_id = ? AND feature_name = ?");
-        $stmt->execute([$userId, $featureName]);
-        return $stmt->fetch() !== false;
+        try {
+            $stmt = $this->db->prepare("SELECT 1 FROM {$this->table} WHERE user_id = ? AND feature_name = ?");
+            $stmt->execute([$userId, $featureName]);
+            return $stmt->fetch() !== false;
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     // ============================================================================

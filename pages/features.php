@@ -7,6 +7,7 @@ $userId = $_SESSION['user_id'] ?? 0;
 require_once '../includes/Database.php';
 require_once '../includes/Coins.php';
 require_once '../includes/Results.php';
+require_once '../includes/Features.php';
 
 try {
     $db = (new Database())->connect();
@@ -35,6 +36,8 @@ try {
         .nav a.active { background:#7aa2f7; color:#1a1b26; }
         .btn { background:#7aa2f7; color:#1a1b26; }
         .btn:hover { background:#6272a4; }
+        .challenge-btn { background:#f7768e; color:#1a1b26; }
+        .challenge-btn:hover { background:#ff5555; }
         .wpm { font-weight:bold; color:#9ece6a; }
     </style>
 </head>
@@ -92,7 +95,7 @@ try {
                     this.msg = 'Kauf...';
                     
                     try {
-                        const res = await axios.get('/PHP-ProjektTypeFast/backend/api/challenge.php?id=' + targetId);
+                        const res = await axios.get('../api/challenge.php?id=' + targetId);
                         if (res.data.status === 'success') {
                             this.coins -= 100;
                             window.location = 'test.php?challenge=' + targetId + '&wpm=' + res.data.target.wpm;
@@ -120,7 +123,7 @@ try {
                                 <td class="wpm">{{ entry.wpm }}</td>
                                 <td>{{ entry.accuracy }}%</td>
                                 <td>
-                                    <button v-if="canChallenge" @click="buyChallenge(entry.id)" class="btn">Herausfordern</button>
+                                    <button v-if="canChallenge" @click="buyChallenge(entry.id)" class="btn challenge-btn">Herausfordern</button>
                                     <span v-else style="color:#565f89;">-</span>
                                 </td>
                             </tr>

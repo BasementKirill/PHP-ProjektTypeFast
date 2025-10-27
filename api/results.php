@@ -21,39 +21,41 @@ $coinsModel = new Coins($db);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $in = json_decode(file_get_contents('php://input'), true) ?? [];
+
+    // Quick action handler: saveCoins during typing
+    if (isset($in['action']) && $in['action'] === 'saveCoins') {
+        $amount = (int)($in['amount'] ?? 0);
+        if ($amount > 0) {
+            $coinsModel->add($userId, $amount);
+        }
+        echo json_encode(['status' => 'success', 'totalCoins' => $coinsModel->get($userId)]);
+        exit;
+    }
+
+    // Otherwise treat this as a final result submission
     $wpm = (int)($in['wpm'] ?? 0);
     $accuracy = (int)($in['accuracy'] ?? 0);
     $charsTyped = (int)($in['charsTyped'] ?? 0);
     $completed = $in['completed'] ?? false;
-    
+
     if ($wpm <= 0 || $accuracy < 0 || $accuracy > 100) {
         http_response_code(400);
         echo json_encode(['status'=>'error','message'=>'Invalid result values']);
         exit;
     }
-    
+
     $result = $model->create($userId, $wpm, $accuracy);
-    
+
     // Coins vergeben: 1 pro Zeichen + 10 wenn fertig
     $coinsEarned = $charsTyped + ($completed ? 10 : 0);
     $coinsModel->add($userId, $coinsEarned);
-    
-    // Coins wurden bereits live vergeben, nur finale Coins zurückgeben
+
+    // Return final info
     echo json_encode([
         'status' => 'success',
         'coinsEarned' => $coinsEarned,
         'totalCoins' => $coinsModel->get($userId)
     ]);
-    exit;
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($in['action']) && $in['action'] === 'saveCoins') {
-    // Coins während des Tests speichern
-    $amount = (int)($in['amount'] ?? 0);
-    if ($amount > 0) {
-        $coinsModel->add($userId, $amount);
-    }
-    echo json_encode(['status' => 'success', 'totalCoins' => $coinsModel->get($userId)]);
     exit;
 }
 

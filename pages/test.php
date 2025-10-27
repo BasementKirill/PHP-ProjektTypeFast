@@ -34,6 +34,8 @@ try {
     <style>
         .test-area { font-size:28px; line-height:2; padding:20px; background:#16161e; border-radius:8px; }
         .char { display:inline-block; }
+    .char.space { display:inline-block; width:1.2em; }
+        .char.opponent { box-shadow: inset 0 -3px 0 rgba(247,118,142,0.9); }
         .char.correct { color:#9ece6a; }
         .char.wrong { color:#f7768e; background:#2d2538; }
         .char.current { background:#394374; padding:0 2px; border-radius:2px; color:#fff; }
@@ -81,10 +83,14 @@ try {
                     wpm: 0,
                     accuracy: 0,
                     coins: <?= $coins ?>,
+                    coinsEarned: 0,
                     lastInputLength: 0,
                     challengeMode: <?= $challengeId ? 'true' : 'false' ?>,
                     targetWpm: <?= (int)$targetWpm ?>,
                     challengeId: <?= $challengeId ?? 'null' ?>
+                    , opponentIndex: 0,
+                    opponentTimer: null,
+                    opponentFinished: false
                 }
             },
             computed: {
@@ -101,10 +107,38 @@ try {
             methods: {
                 async loadText() {
                     try {
-                        const res = await axios.get('/PHP-ProjektTypeFast/backend/api/sentence.php?words=50');
+                        // use relative API path (api is in project root)
+                        const res = await axios.get('../api/sentence.php?words=50');
                         this.text = res.data.sentence;
                     } catch(e) {
-                        this.text = 'thequickbrownfoxjumpsoverthelazydog';
+                        // fallback with spaces (readable sample)
+                        this.text = 'The quick brown fox jumps over the lazy dog';
+                    }
+                },
+                displayChar(c) {
+                    return c === ' ' ? '&nbsp;' : c;
+                },
+                startOpponent() {
+                    // start an opponent caret that moves at targetWpm if in challenge mode
+                    if (!this.challengeMode || !this.targetWpm || this.opponentTimer) return;
+                    this.opponentIndex = 0;
+                    this.opponentFinished = false;
+                    const cps = (this.targetWpm * 5) / 60; // chars per second
+                    const stepMs = 100; // update every 100ms
+                    const perTick = cps * (stepMs / 1000);
+                    this.opponentTimer = setInterval(() => {
+                        this.opponentIndex += perTick;
+                        if (Math.floor(this.opponentIndex) >= this.text.length) {
+                            clearInterval(this.opponentTimer);
+                            this.opponentTimer = null;
+                            this.opponentFinished = true;
+                        }
+                    }, stepMs);
+                },
+                stopOpponent() {
+                    if (this.opponentTimer) {
+                        clearInterval(this.opponentTimer);
+                        this.opponentTimer = null;
                     }
                 },
                 async onInput(e) {
@@ -119,7 +153,7 @@ try {
                         
                         // Save to DB immediately
                         try {
-                            await axios.post('/PHP-ProjektTypeFast/backend/api/results.php', {
+                            await axios.post('../api/results.php', {
                                 action: 'saveCoins',
                                 amount: newChars
                             });
@@ -136,6 +170,8 @@ try {
                     if (this.running || this.done) return;
                     this.running = true;
                     this.msg = '';
+                    // start opponent in challenge mode
+                    if (this.challengeMode) this.startOpponent();
                     this.timer = setInterval(() => {
                         this.timeLeft--;
                         if (this.timeLeft <= 0) this.finish();
@@ -164,6 +200,7 @@ try {
                     if (this.done) return;
                     clearInterval(this.timer);
                     this.timer = null;
+                    this.stopOpponent();
                     this.running = false;
                     this.done = true;
                 },
@@ -188,7 +225,7 @@ try {
                         const completed = this.input === this.text;
                         const totalCoins = this.coinsEarned + (completed ? 10 : 0);
                         
-                        const res = await axios.post('/PHP-ProjektTypeFast/backend/api/results.php', {
+                        const res = await axios.post('../api/results.php', {
                             wpm: this.wpm,
                             accuracy: this.accuracy,
                             charsTyped: this.input.length,
@@ -222,16 +259,15 @@ try {
                     </div>
 
                     <div class="test-area" @click="$refs.input.focus()">
-                        <span v-for="(char, idx) in text" :key="idx" class="char" :class="chars[idx]">
-                            {{ char }}
-                        </span>
+                        <span v-for="(char, idx) in text" :key="idx" class="char"
+                              :class="[chars[idx], char === ' ' ? 'space' : '', (challengeMode && Math.floor(opponentIndex) === idx) ? 'opponent' : '']"
+                              v-html="displayChar(char)"></span>
                     </div>
 
                     <input ref="input" v-model="input" :disabled="done" @input="onInput" 
                            style="position: absolute; opacity: 0; left: -9999px;" />
 
                     <div class="actions">
-                        <button @click="start" :disabled="running" class="btn">Start</button>
                         <button @click="reset" class="btn">Reset</button>
                         <button @click="save" :disabled="!done || saving" class="btn">Speichern</button>
                     </div>
