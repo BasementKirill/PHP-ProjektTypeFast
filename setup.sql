@@ -2,7 +2,7 @@
 CREATE DATABASE IF NOT EXISTS typefast;
 USE typefast;
 
--- Tabelle users
+-- Tabelle users (AI für hashwertumwandlung der passwörter)
 CREATE TABLE IF NOT EXISTS users (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   username VARCHAR(64) NOT NULL UNIQUE,
@@ -35,6 +35,17 @@ CREATE TABLE IF NOT EXISTS user_coins (
 CREATE TABLE IF NOT EXISTS words (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   word VARCHAR(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Tabelle für Features (kaufbare Funktionen)
+CREATE TABLE IF NOT EXISTS user_features (
+  user_id INT UNSIGNED NOT NULL,
+  feature_name VARCHAR(50) NOT NULL,
+  purchased_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, feature_name),
+  CONSTRAINT fk_features_user
+    FOREIGN KEY (user_id) REFERENCES users(id)
+    ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- Beispiel-Wörter einfügen
