@@ -3,13 +3,7 @@ require_once "../core/Database.php";
 require_once "../models/Results.php";
 
 header('Content-Type: application/json');
-$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
-if (strpos($origin, 'http://localhost') === 0 || strpos($origin, 'https://localhost') === 0) {
-    header('Access-Control-Allow-Origin: ' . $origin);
-} else {
-    header('Access-Control-Allow-Origin: http://localhost:5173');
-}
-header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type');
 header('Access-Control-Allow-Methods: GET, OPTIONS');
 
