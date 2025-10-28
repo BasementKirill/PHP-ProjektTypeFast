@@ -1,3 +1,4 @@
+<!-- Ai Genneriert für degub meiner features + während des entwickeln wieso der fehler auftaucht -->
 <?php
 session_start();
 header('Content-Type: text/html; charset=utf-8');

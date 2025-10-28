@@ -1,4 +1,5 @@
 <?php
+//Voller AI genertierter TestLauf des programmes wegen redirecting problemen
 // One-click seed: purchases a feature for the current logged-in user.
 session_start();
 header('Content-Type: text/html; charset=utf-8');

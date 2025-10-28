@@ -10,6 +10,7 @@
 // $connection = $db->connect();
 // $stmt = $connection->prepare("SELECT * FROM users WHERE id = ?");
 // $stmt->execute([$userId]);
+// AI Für Error Handeling
 
 class Database {
     // Database configuration - matches XAMPP default settings
@@ -19,9 +20,6 @@ class Database {
     private $password = "";             // XAMPP default (no password)
     public $connection;                 // Public property to store connection
 
-    // ============================================================================
-    // CONNECT TO DATABASE
-    // ============================================================================
     // Creates a new PDO connection to the MySQL database
     // Returns: PDO connection object or dies with error message
     public function connect() {
@@ -36,7 +34,6 @@ class Database {
             $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $this->connection;
         } catch(PDOException $e) {
-            // If connection fails, stop execution and show error
             die("Database error: " . $e->getMessage());
         }
     }

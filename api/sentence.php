@@ -11,7 +11,7 @@ header('Content-Type: application/json');
 $db = (new Database())->connect();
 
 // Get random words
-$count = isset($_GET['words']) ? (int)$_GET['words'] : 10;
+$count = isset($_GET['words']) ? (int)$_GET['words'] : 10; // AI für random word benutzt
 $count = max(5, min($count, 50));
 
 $stmt = $db->query("SELECT word FROM words ORDER BY RAND() LIMIT $count");

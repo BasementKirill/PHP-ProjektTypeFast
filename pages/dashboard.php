@@ -25,6 +25,7 @@ $featuresModel = new Features($db);
 $userFeatures = $featuresModel->getUserFeatures($userId);
 
 // Statistiken berechnen
+//Berrechnung der Werte mit Hilfe von AI
 $totalTests = count($userResults);
 $bestWpm = $totalTests > 0 ? max(array_column($userResults, 'wpm')) : 0;
 $avgWpm = $totalTests > 0 ? round(array_sum(array_column($userResults, 'wpm')) / $totalTests) : 0;
@@ -39,7 +40,7 @@ $avgAccuracy = $totalTests > 0 ? round(array_sum(array_column($userResults, 'acc
     <title>Dashboard - TypeFast</title>
     <link rel="stylesheet" href="../assets/common.css">
     <style>
-        /* Small page-specific tweaks that complement the shared CSS */
+        /* Kleine Css änderungen von der COmmon.css*/
         .stat-card { background:#111; padding:20px; border-radius:8px; border:1px solid #222; text-align:center; }
         .stat-number { font-size:2em; font-weight:bold; color:#7aa2f7; }
         .stat-label { color:#bbb; margin-top:5px; }

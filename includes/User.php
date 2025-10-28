@@ -1,7 +1,5 @@
 <?php
-// ============================================================================
-// USER MANAGEMENT CLASS
-// ============================================================================
+
 // This class handles all user-related database operations:
 // - User registration (create new accounts)
 // - User login (verify credentials)
@@ -23,12 +21,10 @@ class User {
         $this->db = $database;
     }
 
-    // ============================================================================
-    // REGISTER NEW USER
-    // ============================================================================
     // Creates a new user account with hashed password
     // Parameters: $username (string), $password (string)
     // Returns: Array with 'status' and either 'user' data or 'message' error
+
     public function register($username, $password) {
         // Hash the password for secure storage (never store plain text passwords!)
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
@@ -46,9 +42,6 @@ class User {
         }
     }
 
-    // ============================================================================
-    // LOGIN USER
-    // ============================================================================
     // Verifies user credentials and returns user data if valid
     // Parameters: $username (string), $password (string)
     // Returns: Array with 'status' and either 'user' data or 'message' error
@@ -65,9 +58,6 @@ class User {
         return ["status" => "error", "message" => "Invalid username or password"];
     }
 
-    // ============================================================================
-    // GET USER BY ID
-    // ============================================================================
     // Retrieves user data by their unique ID
     // Parameters: $userId (integer)
     // Returns: User array or null if not found

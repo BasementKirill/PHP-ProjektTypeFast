@@ -6,13 +6,14 @@
 // 1. Session management (check if user is logged in)
 // 2. Navigation display (different menus for logged in/out users)
 // 3. Main content area with welcome message
+//  Die __DIR__ require mit AI und die <?php if(...): > möglichkeit gefragt
 
 session_start();
 $loggedIn = isset($_SESSION['user_id']);
 $username = $_SESSION['username'] ?? '';
 $coins = 0;
 if ($loggedIn) {
-    require_once __DIR__ . '/includes/Database.php';
+    require_once __DIR__ . '/includes/Database.php'; 
     require_once __DIR__ . '/includes/Coins.php';
     try {
         $db = (new Database())->connect();

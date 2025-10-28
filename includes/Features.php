@@ -1,9 +1,7 @@
 <?php
-// ============================================================================
-// FEATURES MANAGEMENT CLASS
-// ============================================================================
 // This class handles user features (buyable functionality)
 // Features include: error_display, progress_bar, customization, challenge_mode
+//AI hilfe für userFeatures bekommen und zugreifbare features
 
 class Features {
     private $db;
@@ -13,9 +11,6 @@ class Features {
         $this->db = $database;
     }
 
-    // ============================================================================
-    // GET USER FEATURES
-    // ============================================================================
     // Returns array of feature names that the user has purchased
     public function getUserFeatures($userId) {
         try {
@@ -28,9 +23,7 @@ class Features {
         }
     }
 
-    // ============================================================================
-    // CHECK IF USER HAS FEATURE
-    // ============================================================================
+
     // Returns true if user has purchased the specified feature
     public function hasFeature($userId, $featureName) {
         try {
@@ -42,9 +35,7 @@ class Features {
         }
     }
 
-    // ============================================================================
-    // PURCHASE FEATURE
-    // ============================================================================
+
     // Adds a feature to the user's account
     public function purchaseFeature($userId, $featureName) {
         try {
@@ -56,9 +47,7 @@ class Features {
         }
     }
 
-    // ============================================================================
-    // GET AVAILABLE FEATURES
-    // ============================================================================
+
     // Returns array of all available features with their prices
     public function getAvailableFeatures() {
         return [

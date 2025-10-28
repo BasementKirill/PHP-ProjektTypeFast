@@ -1,4 +1,6 @@
 <?php
+============================================================================
+// AI Für Opponent und Async schreiben + farbschemen + char display + axios library für die Asyncs
 session_start();
 
 if(!isset($_SESSION['user_id'])) {

@@ -3,7 +3,7 @@ require_once "../includes/Database.php";
 require_once "../includes/Session.php";
 require_once "../includes/User.php";
 
-// CORS
+// CORS | AI für diese benutzt wegen errors
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Headers: Content-Type, X-Requested-With');
@@ -18,7 +18,7 @@ Session::start();
 
 $db = (new Database())->connect();
 $userModel = new User($db);
-$action = $_GET['action'] ?? '';
+$action = $_GET['action'] ?? ''; // Coaelscing opperator z.B if(a ??= 50)
 $input = json_decode(file_get_contents('php://input'), true) ?? [];
 
 if ($action === 'login' && $_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -59,6 +59,7 @@ if ($action === 'logout' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     exit;
 }
 
+//AI für me hilfe um den nutzenden user zu bekommen
 if ($action === 'me' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     $userId = Session::currentUserId();
     if ($userId) {
